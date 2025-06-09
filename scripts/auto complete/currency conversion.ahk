@@ -8,6 +8,9 @@ json_text := FileRead("..\..\data\exchange_rates.json")
 
 exchange_rates := Jxon_Load(&json_text)
 
+aliases_json_text := FileRead("..\..\data\aliases.json")
+currency_aliases := Jxon_Load(&aliases_json_text)
+
 convert_currencies(amount, from_currency, to_currency) {
     global exchange_rates
 
@@ -46,19 +49,26 @@ detect_and_convert(str) {
             to_currency := StrLower(match[3])
 
             try {
+                if currency_aliases.Has(from_currency)
+                    from_currency := currency_aliases[from_currency]
+                if currency_aliases.Has(to_currency)
+                    to_currency := currency_aliases[to_currency]
+
                 exchange_rates[from_currency]
                 exchange_rates[to_currency]
                 result := convert_currencies(number, from_currency, to_currency)
                 return result
             }
         }
-        ; Check for pattern with no target currency (10usdto) - use INR as default
+        ; Check for pattern with no target currency (10usd) - use INR as default
         else if (RegExMatch(str, "^(\d+\.?\d*)([a-zA-Z]+)$", &match)) {
             number := match[1]
             from_currency := StrLower(match[2])
             to_currency := local_currency
 
             try {
+                if currency_aliases.Has(from_currency)
+                    from_currency := currency_aliases[from_currency]
                 exchange_rates[from_currency]
                 exchange_rates[to_currency]
                 result := convert_currencies(number, from_currency, to_currency)
@@ -91,7 +101,6 @@ detect_and_convert(str) {
 
     return
 }
-
 
 ; Hotkey to convert selected currency text with Win+c
 #o:: convert_selection()
