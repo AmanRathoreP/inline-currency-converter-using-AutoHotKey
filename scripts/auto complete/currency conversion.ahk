@@ -6,7 +6,7 @@
 
 json_text := FileRead("..\..\data\exchange_rates.json")
 
-exchange_rates := Jxon_Load(&json_text)
+exchange_rates := Jxon_Load(&json_text)["rates"]
 
 aliases_json_text := FileRead("..\..\data\aliases.json")
 currency_aliases := Jxon_Load(&aliases_json_text)
