@@ -3,7 +3,7 @@ Contact: amanr.me | amanrathore9753 <at> gmail <dot> com
 Created on: Wednesday, May 21, 2025 at 11:45 -->
 
 <div align="center">
-  <h1>Inline Currency Converter using AutoHotKey - v1</h1>
+  <h1>Inline Currency Converter using AutoHotKey - v2.0.0</h1>
 
 A lightweight AutoHotkey script to quickly convert currencies exchange rates from a local JSON file. Trigger conversions via hotkeys, update rates data, and customize supported currencies.
 
@@ -28,6 +28,7 @@ A lightweight AutoHotkey script to quickly convert currencies exchange rates fro
   - [File Hierarchy](#file-hierarchy)
   - [Exchange-Rate Logic](#exchange-rate-logic)
 - [Customization](#customization)
+- [| **Currency Aliases**| `data\aliases.json`      | Add your own regional terms or nicknames for currencies |](#-currency-aliases-dataaliasesjson-------add-your-own-regional-terms-or-nicknames-for-currencies-)
 - [Author \& Contact](#author--contact)
 - [License](#license)
 
@@ -45,8 +46,13 @@ Ideal for writers, traders, and anyone juggling multiple currencies while workin
 ## Features
 
 - **In-Place Conversion** – Converts the selected text and replaces it with the formatted result—no copy-paste dance required.
-- **Flexible Notation** – Accepts plain currency names or popular synonyms (e.g. `yen`, `jpy`).
-  > there was only `jpy` and `krw` in the exchange rates file fetched from the api, `yen` and `won` are added manually.
+- **Extensive Alias Support** – Recognizes 500+ currency aliases including:
+  - Colloquial terms (`bucks`, `quid`, `greenbacks`)
+  - City references (`mumbai` → INR, `tokyo` → JPY)
+  - Regional variations and common misspellings
+  - Fractional units (`paisa`, `cents`, `pence`)
+  - Historical references and slang terms
+  > The comprehensive [`aliases.json`](data/aliases.json) file maps all these variations to their standard currency codes.
 - **Hotkey Driven** – Default shortcut <kbd>Win + O</kbd> is easy to reach and unlikely to conflict with standard app shortcuts. It's also customisable to any shortcut you prefer.
 - **JSON-Based Rates** – Reads live rates from `exchange_rates.json`; swap in your own feed or update values manually.
   > Exchange rates are fetched from [coingecko](https://api.coingecko.com/api/v3/exchange_rates), using [this code](https://github.com/AmanRathoreP/Currency-Converter/blob/55029a024ff9fb5feef3a4be48135e3bc68cbc24/src/settings/elements/sub_settings/currency_converter.py#L54) and, unicodes are converted to the symbols using [checkserp](https://checkserp.com/encode/unicode/).
@@ -61,7 +67,7 @@ Ideal for writers, traders, and anyone juggling multiple currencies while workin
 | ------------------- | -------------------------------- | -------------------------------------- |
 | **Windows**         | 10 / 11                          | Administrator rights *not* required.   |
 | **AutoHotkey**      | v2.0 or newer                    | <https://www.autohotkey.com/download/> |
-| **JSON Rates File** | Included (`exchange_rates.json`) | Can be regenerated or swapped using [coingecko](https://api.coingecko.com/api/v3/exchange_rates), using this [generate spec file from my other project](https://github.com/AmanRathoreP/Currency-Converter/tree/master#windowsexe).         |
+| **JSON Rates File** | Included (`exchange_rates.json`) | Can be found at [coingecko](https://api.coingecko.com/api/v3/exchange_rates), just copy and paste the new values or replace the file.         |
 | (Optional) **Git**  | Latest                           | For easy updates & contribution.       |
 
 ---
@@ -110,6 +116,9 @@ converts from `sourceCurrency` to default currency:
 | `100usdtoeur`           | `$100 i.e. €88.16`   |
 | `1500inrtogbp`          | `₹1500 i.e. £13.03` |
 | `75.47usdtowon`          | `$75.47 i.e. ₩104686.94` |
+| `50buckstopounds`       | `$50 i.e. £37.21`        |
+| `200quidtorupees`       | `£200 i.e. ₹23010.05`    |
+| `10bitcointousd`        | `₿10 i.e. $421750.00`    |
 
 &nbsp;  
 
@@ -124,6 +133,7 @@ converts from `sourceCurrency` to default currency:
 📦inline-currency-converter-using-AutoHotKey-master
  ┣ 📂data
  ┃ ┗ 📜exchange_rates.json                    # contains exchange rates data
+ ┃ ┗ 📜aliases.json                           # contains currency aliases
  ┣ 📂scripts
  ┃ ┣ 📂auto complete
  ┃ ┃ ┗ 📜currency conversion.ahk              # contains code with main logic
@@ -148,7 +158,7 @@ The value is rounded to two decimals (configurable) and formatted with the corre
 | ------------------ | ------------------------- | --------------------------------------- |
 | **Hotkeys**        | `scripts\auto complete\currency conversion.ahk`              | Change `#o::` to `^!c::` for <kbd>Ctrl+Alt+C</kbd>  et cetera |
 | **Decimal Places** | `currency conversion.ahk` at `Format("{1:.2f}` | `Format("{1:.4f}` for 4 decimal places|
-
+| **Currency Aliases**| `data\aliases.json`      | Add your own regional terms or nicknames for currencies |
 ---
 
 ## Author & Contact
